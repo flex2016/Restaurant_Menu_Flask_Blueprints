@@ -2,12 +2,14 @@ from flask import Flask, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 
 
+
 # create the application object
 app = Flask(__name__)
+
+
 # config
-app.secret_key = 'my precious'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql://postgres:flex@localhost/restaurants'
+import os
+app.config.from_object(os.environ['APP_SETTINGS'])
 
 # create the sqlalchemy object
 db = SQLAlchemy(app)
@@ -28,4 +30,4 @@ def showRestaurants():
 
 if __name__ == '__main__':
 
-    app.run(port=5000, debug=True)
+    app.run(port=5000)

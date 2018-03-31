@@ -1,7 +1,5 @@
 from app import db
-from models.menuItem import MenuItem
-from models.restaurant import Restaurant
-from models.user import User
+from models import MenuItem, Restaurant, User
 
 # create the database and the db table
 db.create_all()
