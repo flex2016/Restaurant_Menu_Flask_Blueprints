@@ -38,7 +38,7 @@ def showRestaurants():
 def newRestaurant():
     if request.method == 'POST':
         newRestaurant = Restaurant(
-            name=request.form['name'], )
+            name=request.form['name'], user_id=1)
         db.session.add(newRestaurant)
         flash('New Restaurant %s Successfully Created' % newRestaurant.name)
         db.session.commit()
