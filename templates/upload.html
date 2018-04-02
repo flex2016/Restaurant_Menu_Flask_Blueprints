@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<html>
+<head>
+	<title>Upload</title>
+	<h1> {{item.name}}</h1>
+
+</head>
+<body>
+<form method=POST enctype=multipart/form-data action="{{ url_for('upload',restaurant_id = restaurant.id, menu_id=item.id) }}">
+    <input type=file name=photo>
+    <input type="submit">
+
+</form>
+<a href = '{{url_for('showMenu', restaurant_id=restaurant.id)}}'>
+<button type="button" class="btn btn-default cancel">
+  <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Back to {{item.name}}
+</button></a>
+</body>
+</html>
+{% endblock %}
