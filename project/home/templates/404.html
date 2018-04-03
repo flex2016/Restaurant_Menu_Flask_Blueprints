@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+{% block content %}
+
+<html>
+    <head>
+        <title>Not Found - 404</title>
+    </head>
+    <body>
+        <h1>Oh No! {{error}}</h1>
+        <p>That page doesn't exist, we're sorry about that.</p>
+        <p>Visit <a href="#"></a> for more info</p>
+    </body>
+</html>
+{% endblock %}
