@@ -1,5 +1,5 @@
-from app import db
-from models import MenuItem, Restaurant, User
+from project import db
+from project.models import Restaurant, User, MenuItem
 
 
 
