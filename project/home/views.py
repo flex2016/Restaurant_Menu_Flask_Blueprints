@@ -2,7 +2,7 @@
 #### imports ####
 #################
 
-from flask import flash, redirect, render_template, request, session, url_for, Blueprint
+from flask import flash, redirect, render_template, request, session, url_for, Blueprint, jsonify
 from project import db
 from project.models import Restaurant, User, MenuItem
 
@@ -18,7 +18,25 @@ home_blueprint = Blueprint('home', __name__, template_folder='templates')
 ################
 #### routes ####
 ################
+# JSON APIs to view Restaurant Information
+@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/JSON')
+def restaurantMenuJSON(restaurant_id):
+    restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).one()
+    items = db.session.query(MenuItem).filter_by(
+        restaurant_id=restaurant_id).all()
+    return jsonify(MenuItems=[i.serialize for i in items])
 
+
+@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+def menuItemJSON(restaurant_id, menu_id):
+    Menu_Item = db.session.query(MenuItem).filter_by(id=menu_id).one()
+    return jsonify(Menu_Item=Menu_Item.serialize)
+
+
+@home_blueprint.route('/restaurant/JSON')
+def restaurantsJSON():
+    restaurants = db.session.query(Restaurant).all()
+    return jsonify(restaurants=[r.serialize for r in restaurants])
 
 
 # Show all restaurants
