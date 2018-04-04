@@ -13,6 +13,7 @@ class ResourceMixin(object):
 
         return self
 
+
     def delete(self):
         """
         Delete a model instance.
