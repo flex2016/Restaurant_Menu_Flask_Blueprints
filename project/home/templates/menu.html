@@ -101,7 +101,7 @@
 							<a href='{{url_for('home.deleteMenuItem', restaurant_id = restaurant.id, menu_id=i.id ) }}'>Delete</a>
 							<br><br>
 							<button>
-							<a href='{{url_for('upload', restaurant_id = restaurant.id, menu_id=i.id ) }}'>Upload Image</a></button>
+							<a href='{{url_for('home.upload', restaurant_id = restaurant.id, menu_id=i.id ) }}'>Upload Image</a></button>
 						</div>
 						{% endif %}
 					{% endfor %}
