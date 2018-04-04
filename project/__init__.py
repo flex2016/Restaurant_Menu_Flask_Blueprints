@@ -18,7 +18,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 # create the sqlalchemy object
 db = SQLAlchemy(app)
 # import db schema
-from models import *
+from models import Restaurant, User, MenuItem
 from project.home.views import home_blueprint
 
 # register our blueprints

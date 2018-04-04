@@ -1,4 +1,5 @@
 from project import db
+from sql import ResourceMixin
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 
@@ -21,7 +22,7 @@ class User(db.Model):
       self.picture = picture
 
 
-class Restaurant(db.Model):
+class Restaurant(ResourceMixin, db.Model):
     __tablename__ = 'restaurant'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -46,7 +47,7 @@ class Restaurant(db.Model):
         }
 
 
-class MenuItem(db.Model):
+class MenuItem(ResourceMixin, db.Model):
     __tablename__ = 'menu_item'
 
     id = db.Column(db.Integer, primary_key=True)

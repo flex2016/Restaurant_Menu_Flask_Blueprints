@@ -56,9 +56,8 @@ def newRestaurant():
     if request.method == 'POST':
         newRestaurant = Restaurant(
             name=request.form['name'], user_id=1)
-        db.session.add(newRestaurant)
+        newRestaurant.save()
         flash('New Restaurant %s Successfully Created' % newRestaurant.name)
-        db.session.commit()
         return redirect(url_for('home.showRestaurants'))
     else:
         return render_template('newRestaurant.html')
@@ -74,8 +73,7 @@ def editRestaurant(restaurant_id):
     if request.method == 'POST':
         if request.form['name']:
             editedRestaurant.name = request.form['name']
-            db.session.add(editedRestaurant)
-            db.session.commit()
+            editedRestaurant.save()
             flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
             return redirect(url_for('home.showRestaurants'))
     else:
@@ -93,9 +91,8 @@ def deleteRestaurant(restaurant_id):
     # alert messages tro let user know hes not authorized since he didnt create it, used in create, edit, delete functions
 
     if request.method == 'POST':
-        db.session.delete(restaurantToDelete)
+        restaurantToDelete.delete()
         flash('%s Successfully Deleted' % restaurantToDelete.name)
-        db.session.commit()
         return redirect(url_for('home.showRestaurants', restaurant_id=restaurant_id))
     else:
         return render_template('deleteRestaurant.html', restaurant=restaurantToDelete)
@@ -111,8 +108,6 @@ def showMenu(restaurant_id):
     items = db.session.query(MenuItem).filter_by(
         restaurant_id=restaurant_id).all()
     # check who created the file and render template based on that
-
-
     return render_template('menu.html', items=items, restaurant=restaurant)
 
 
@@ -123,8 +118,7 @@ def newMenuItem(restaurant_id):
     if request.method == 'POST':
         newItem = MenuItem(name=request.form['name'], description=request.form['description'], price=request.form[
                            'price'], course=request.form['course'], restaurant_id=restaurant_id, user_id=restaurant.user_id)
-        db.session.add(newItem)
-        db.session.commit()
+        newItem.save()
         flash('New Menu %s Item Successfully Created' % (newItem.name))
         return redirect(url_for('home.showMenu', restaurant_id=restaurant_id))
     else:
@@ -146,8 +140,7 @@ def editMenuItem(restaurant_id, menu_id):
             editedItem.price = request.form['price']
         if request.form['course']:
             editedItem.course = request.form['course']
-        db.session.add(editedItem)
-        db.session.commit()
+        editedItem.save()
         flash('Menu Item Successfully Edited')
         return redirect(url_for('home.showMenu', restaurant_id=restaurant_id))
     else:
@@ -160,8 +153,7 @@ def deleteMenuItem(restaurant_id, menu_id):
     restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).one()
     itemToDelete = db.session.query(MenuItem).filter_by(id=menu_id).one()
     if request.method == 'POST':
-        db.session.delete(itemToDelete)
-        db.session.commit()
+        itemToDelete.delete()
         flash('Menu Item Successfully Deleted')
         return redirect(url_for('home.showMenu', restaurant_id=restaurant_id))
     else:
