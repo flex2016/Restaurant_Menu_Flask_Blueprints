@@ -1,68 +1,128 @@
-from project import app
 import unittest
+from flask.ext.testing import TestCase
+from project import app, db
+from project.models import Restaurant, User, MenuItem
 
-class FlaskTestCase(unittest.TestCase):
+
+
+class BaseTestCase(TestCase):
+    """A base test case."""
+
+    def create_app(self):
+        app.config.from_object('config.TestConfig')
+        return app
+
+    def setUp(self):
+        db.create_all()
+        # db.session.add(BlogPost("Test post", "This is a test. Only a test."))
+        # db.session.add(User("admin", "ad@min.com", "admin"))
+        db.session.commit()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+
+
+class FlaskTestCase(BaseTestCase):
 
 
     def test_restaurant(self):
-        tester = app.test_client(self)
-        response = tester.get('/restaurant/', content_type='html/text')
+
+        response = self.client.get('/restaurant/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
-    # def test_restaurant_new(self):
-    #     tester = app.test_client()
-    #     response = tester.post(
-    #         '/restaurant/new/',
-    #         data=dict(id=10, name="Pizza Place"),
-    #         follow_redirects=True
-    #     )
-    #     self.assertIn(b'Successfully Created', response.data)
+    def test_restaurant_new(self):
+
+        response = self.client.post(
+            '/restaurant/new/',
+            data=dict(name="Pizza Place"),
+            follow_redirects=True
+        )
+        self.assertIn(b'Successfully Created', response.data)
 
     def test_restaurant_edit(self):
-        tester = app.test_client()
-        response=tester.post(
-            '/restaurant/15/edit/',
+        self.client.post(
+            '/restaurant/new/',
+            data=dict(name="Pizza Place"),
+            follow_redirects=True
+        )
+        response=self.client.post(
+            '/restaurant/1/edit/',
             data=dict(name="New Pizza 201"),
             follow_redirects=True
         )
-        # response = tester.get('/restaurant/', follow_redirects=True)
         self.assertIn(b'Successfully Edited', response.data)
 
     def test_restaurant_delete(self):
-        tester = app.test_client()
-        response = tester.post(
-            '/restaurant/20/delete/', follow_redirects=True)
+        self.client.post(
+            '/restaurant/new/',
+            data=dict(name="Pizza Place"),
+            follow_redirects=True
+        )
+        response = self.client.post(
+            '/restaurant/1/delete/', follow_redirects=True)
 
         self.assertIn(b'Successfully Deleted', response.data)
 
     def test_showMenu(self):
-        tester = app.test_client(self)
-        response = tester.get('/restaurant/3/menu/', content_type='html/text')
+        self.client.post(
+            '/restaurant/new/',
+            data=dict(name="Pizza Place"),
+            follow_redirects=True
+        )
+        self.client.post(
+            '/restaurant/1/menu/new/',
+            data=dict(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree",restaurant_id="1", user_id="1"),
+            follow_redirects=True
+        )
+        response = self.client.get('/restaurant/1/menu/', content_type='html/text')
         self.assertTrue(b'Add Menu Item' in response.data)
 
     def test_newMenuItem(self):
-        tester = app.test_client()
-        response = tester.post(
-            '/restaurant/19/menu/new/',
+        self.client.post(
+            '/restaurant/new/',
+            data=dict(name="Pizza Place"),
+            follow_redirects=True
+        )
+        response = self.client.post(
+            '/restaurant/1/menu/new/',
             data=dict(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree",restaurant_id="1", user_id="1"),
             follow_redirects=True
         )
         self.assertIn(b'Successfully Created', response.data)
 
     def test_editMenuItem(self):
-        tester = app.test_client()
-        response = tester.post(
-            '/restaurant/19/menu/51/edit/',
+        self.client.post(
+            '/restaurant/new/',
+            data=dict(name="Pizza Place"),
+            follow_redirects=True
+        )
+        self.client.post(
+            '/restaurant/1/menu/new/',
+            data=dict(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree",restaurant_id="1", user_id="1"),
+            follow_redirects=True
+        )
+        response = self.client.post(
+            '/restaurant/1/menu/1/edit/',
             data=dict(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree",restaurant_id="1", user_id="1"),
             follow_redirects=True
         )
         self.assertIn(b'Menu Item Successfully Edited', response.data)
 
     def test_deleteMenuItem(self):
-        tester = app.test_client()
-        response = tester.post(
-            '/restaurant/23/menu/64/delete/',
-            data=dict(restaurant_id="34", menu_id_id="61"),
+        self.client.post(
+            '/restaurant/new/',
+            data=dict(name="Pizza Place"),
+            follow_redirects=True
+        )
+        self.client.post(
+            '/restaurant/1/menu/new/',
+            data=dict(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree",restaurant_id="1", user_id="1"),
+            follow_redirects=True
+        )
+        response = self.client.post(
+            '/restaurant/1/menu/1/delete/',
             follow_redirects=True
         )
         self.assertIn(b'Successfully Deleted', response.data)
