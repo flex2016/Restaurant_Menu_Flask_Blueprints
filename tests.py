@@ -54,7 +54,7 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/restaurant/19/menu/51/edit/',
-            data=dict(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree"),
+            data=dict(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree",restaurant_id="1", user_id="1"),
             follow_redirects=True
         )
         self.assertIn(b'Menu Item Successfully Edited', response.data)
@@ -62,8 +62,8 @@ class FlaskTestCase(unittest.TestCase):
     def test_deleteMenuItem(self):
         tester = app.test_client()
         response = tester.post(
-            '/restaurant/19/menu/52/delete/',
-            data=dict(name=""),
+            '/restaurant/23/menu/64/delete/',
+            data=dict(restaurant_id="34", menu_id_id="61"),
             follow_redirects=True
         )
         self.assertIn(b'Successfully Deleted', response.data)
