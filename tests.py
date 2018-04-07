@@ -9,31 +9,30 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/restaurant/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
-    def test_restaurant_new(self):
-        tester = app.test_client()
-        response = tester.post(
-            '/restaurant/new/',
-            data=dict(id=10, name="Pizza Place"),
-            follow_redirects=True
-        )
-        self.assertIn(b'Successfully Created', response.data)
+    # def test_restaurant_new(self):
+    #     tester = app.test_client()
+    #     response = tester.post(
+    #         '/restaurant/new/',
+    #         data=dict(id=10, name="Pizza Place"),
+    #         follow_redirects=True
+    #     )
+    #     self.assertIn(b'Successfully Created', response.data)
 
     def test_restaurant_edit(self):
         tester = app.test_client()
-        response = tester.post(
+        response=tester.post(
             '/restaurant/15/edit/',
-            data=dict(name="FLEX"),
+            data=dict(name="New Pizza 201"),
             follow_redirects=True
         )
+        # response = tester.get('/restaurant/', follow_redirects=True)
         self.assertIn(b'Successfully Edited', response.data)
 
     def test_restaurant_delete(self):
         tester = app.test_client()
         response = tester.post(
-            '/restaurant/16/delete/',
-            data=dict(name=""),
-            follow_redirects=True
-        )
+            '/restaurant/20/delete/', follow_redirects=True)
+
         self.assertIn(b'Successfully Deleted', response.data)
 
     def test_showMenu(self):
