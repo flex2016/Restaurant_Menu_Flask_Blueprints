@@ -14,6 +14,7 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         db.create_all()
+        db.session.add(User("admin", "ad@min.com", "admin"))
         db.session.add(Restaurant("New Pizza", "1"))
         db.session.add(MenuItem(name="New Pizza", description="Cheese Pizza", price="12.99", course="Entree",restaurant_id="1", user_id="1"))
         db.session.commit()
