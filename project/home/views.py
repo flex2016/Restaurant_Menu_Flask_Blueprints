@@ -316,7 +316,7 @@ def restaurantsJSON():
 
 # Show all restaurants
 @home_blueprint.route('/')
-@home_blueprint.route('/restaurant/')
+@home_blueprint.route('/restaurant')
 def showRestaurants():
     # restaurants = Restaurant.query.all()
     restaurants = db.session.query(Restaurant).order_by(Restaurant.name.asc())
@@ -327,7 +327,7 @@ def showRestaurants():
 
 
 # Create a new restaurant
-@home_blueprint.route('/restaurant/new/', methods=['GET', 'POST'])
+@home_blueprint.route('/restaurant/new', methods=['GET', 'POST'])
 def newRestaurant():
     if 'username' not in login_session:  # verify if user is logged in
         return redirect('/login')
@@ -343,7 +343,7 @@ def newRestaurant():
 # Edit a restaurant
 
 
-@home_blueprint.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
+@home_blueprint.route('/restaurant/<int:restaurant_id>/edit', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -363,7 +363,7 @@ def editRestaurant(restaurant_id):
 # Delete a restaurant
 
 
-@home_blueprint.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
+@home_blueprint.route('/restaurant/<int:restaurant_id>/delete', methods=['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -382,8 +382,8 @@ def deleteRestaurant(restaurant_id):
 # Show a restaurant menu
 
 
-@home_blueprint.route('/restaurant/<int:restaurant_id>/')
-@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/')
+@home_blueprint.route('/restaurant/<int:restaurant_id>')
+@home_blueprint.route('/restaurant/<int:restaurant_id>/menu')
 def showMenu(restaurant_id):
     restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).one()
     creator = getUserInfo(restaurant.user_id)  # who created the menu
@@ -397,7 +397,7 @@ def showMenu(restaurant_id):
 
 
 # Create a new menu item
-@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
+@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/new', methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -416,7 +416,7 @@ def newMenuItem(restaurant_id):
 # Edit a menu item
 
 
-@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit/', methods=['GET', 'POST'])
+@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', methods=['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -442,7 +442,7 @@ def editMenuItem(restaurant_id, menu_id):
 
 
 # Delete a menu item
-@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete/', methods=['GET', 'POST'])
+@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', methods=['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -460,7 +460,7 @@ def deleteMenuItem(restaurant_id, menu_id):
 
 
 
-@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/upload/', methods=['GET', 'POST'])
+@home_blueprint.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/upload', methods=['GET', 'POST'])
 def upload(restaurant_id, menu_id):
     restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).one()
     item = db.session.query(MenuItem).filter_by(id=menu_id).one()  # find item to edit
@@ -480,7 +480,7 @@ def not_found(error):
 # error example code
 
 
-@home_blueprint.route('/slashboard/')
+@home_blueprint.route('/slashboard')
 def slashboard():
     restaurants = db.session.query(Restaurant).order_by(Restaurant.name.asc())
     try:
@@ -489,7 +489,7 @@ def slashboard():
         return render_template('404.html', error=error)
 
 
-@home_blueprint.route('/request-info/')
+@home_blueprint.route('/request-info')
 def request_info():
     # Get location info using https://freegeoip.net/
     geoip_url = 'http://freegeoip.net/json/{}'.format(request.remote_addr)
