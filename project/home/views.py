@@ -30,11 +30,11 @@ home_blueprint = Blueprint('home', __name__, template_folder='templates')
 CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 APPLICATION_NAME = "Restaurant Menu Application"
 
+# Login Helper Functions
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
-    db.session.add(newUser)
-    db.session.commit()
+    newUser.save()
     user = db.session.query(User).filter_by(email=login_session['email']).one()
     return user.id
 

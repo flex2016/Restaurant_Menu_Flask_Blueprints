@@ -16,7 +16,6 @@ class ResourceMixin(object):
 
         return self
 
-
     def delete(self):
         """
         Delete a model instance.
@@ -27,7 +26,7 @@ class ResourceMixin(object):
         return db.session.commit()
 
 
-class User(db.Model):
+class User(ResourceMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -37,10 +36,10 @@ class User(db.Model):
     restaurant = db.relationship('Restaurant', backref='restaurant')
     menuItems = db.relationship('MenuItem', backref='user')
 
-    def __init__(self, name,email, picture):
-      self.name = name
-      self.email = email
-      self.picture = picture
+    def __init__(self, name, email, picture):
+        self.name = name
+        self.email = email
+        self.picture = picture
 
 
 class Restaurant(ResourceMixin, db.Model):
@@ -51,13 +50,9 @@ class Restaurant(ResourceMixin, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     menuItem = db.relationship('MenuItem', backref='menu_item')
 
-
-
     def __init__(self, name, user_id):
-      self.name = name
-      self.user_id = user_id
-
-
+        self.name = name
+        self.user_id = user_id
 
     @property
     def serialize(self):
@@ -79,17 +74,13 @@ class MenuItem(ResourceMixin, db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
-
     def __init__(self, name, description, price, course, restaurant_id, user_id):
-      self.name = name
-      self.description = description
-      self.price = price
-      self.course = course
-      self.restaurant_id = restaurant_id
-      self.user_id = user_id
-
-
+        self.name = name
+        self.description = description
+        self.price = price
+        self.course = course
+        self.restaurant_id = restaurant_id
+        self.user_id = user_id
 
     @property
     def serialize(self):
