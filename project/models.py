@@ -1,7 +1,7 @@
 from project import db
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
-from sql import ResourceMixin
+from lib.sql import ResourceMixin
 
 
 # class ResourceMixin(object):
