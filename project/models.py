@@ -1,29 +1,30 @@
 from project import db
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
+from sql import ResourceMixin
 
 
-class ResourceMixin(object):
+# class ResourceMixin(object):
 
-    def save(self):
-        """
-        Save a model instance.
+#     def save(self):
+#         """
+#         Save a model instance.
 
-        :return: Model instance
-        """
-        db.session.add(self)
-        db.session.commit()
+#         :return: Model instance
+#         """
+#         db.session.add(self)
+#         db.session.commit()
 
-        return self
+#         return self
 
-    def delete(self):
-        """
-        Delete a model instance.
+#     def delete(self):
+#         """
+#         Delete a model instance.
 
-        :return: db.session.commit()'s result
-        """
-        db.session.delete(self)
-        return db.session.commit()
+#         :return: db.session.commit()'s result
+#         """
+#         db.session.delete(self)
+#         return db.session.commit()
 
 
 class User(ResourceMixin, db.Model):
