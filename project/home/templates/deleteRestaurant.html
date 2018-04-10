@@ -1,6 +1,6 @@
-{% extends "main.html" %}
+{% extends "layout/main.html" %}
 {% block content %}
-{% include "header.html" %}
+{% include "layout/header.html" %}
 <h2> Are you sure you want to delete {{restaurant.name}}? </h2>
 
 <form action='{{ url_for('home.deleteRestaurant', restaurant_id=restaurant.id)}}' method = 'post'>

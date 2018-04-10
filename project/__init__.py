@@ -20,6 +20,8 @@ db = SQLAlchemy(app)
 # import db schema
 from models import Restaurant, User, MenuItem
 from project.home.views import home_blueprint
+from project.user.views import user_blueprint
 
 # register our blueprints
 app.register_blueprint(home_blueprint)
+app.register_blueprint(user_blueprint)
