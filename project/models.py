@@ -3,7 +3,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 
 
-
 class ResourceMixin(object):
 
     def save(self):
